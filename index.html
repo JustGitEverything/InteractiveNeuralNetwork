@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Neural Network</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="NeuralNetwork.js"></script>
+    <script src="index.js"></script>
+</head>
+
+<body>
+    <h1>Interactive Neural Network</h1>
+
+    <div id="select-data">
+        <h2>Select a data set:</h2>
+
+        <div class="data-sets">
+            <div class="set forest">
+                <p>mandelbrot</p><img class="mandelbrot" src="imgs/mandelbrot.png" style="width: 170px;">
+            </div>
+            <div class="set mandelbrot">
+                <p>forest</p><img class="forest" src="imgs/forest.png" style="width: 170px;">
+            </div>
+            <div class="set mnist">
+                <p>mnist</p><img class="mnist" src="imgs/mnist.png" style="width: 170px;">
+            </div>
+        </div>
+    </div>
+
+    <div id="network-div">
+        <h2>Current Neural Network: </h2>
+
+        <div id="network">
+            <div class="wrapper"></div>
+        </div>
+
+        <div id="layer-changer"></div>
+    </div>
+
+    <div id="customise-div">
+        <h3>Add a new layer to neural network</h3>
+        <input type="number" placeholder="number of neurons" class="add-input">
+        <button class="add-button">Add</button>
+
+        <h3>Change value</h3>
+        <p class="limit">-2</p>
+        <input type="range" min="-200" max="200" value="-2" class="change-value">
+        <p class="limit"> 2</p>
+
+        <p class="currentValue">0.0</p>
+    </div>
+
+    <div id="train-div">
+        <h2 class="train-heading">Train Neural Network:</h2>
+        <div class="train-input">
+            <input type="number" placeholder="epochs" class="epochs">
+            <input type="number" placeholder="iterations" class="iterations">
+            <button class="train-button">train</button>
+        </div>
+    </div>
+
+    <div id="evaluate-div">
+        <h2 class="eval-h">Evaluate Neural Network:</h2>
+        <div class="eval">
+            <input type="number" placeholder="iterations" class="evaluate iterations">
+            <button class="evaluate-button">evaluate</button>
+        </div>
+    </div>
+
+    <div id="learning-rate-div">
+        <h2>Change learning rate:</h2>
+        <div class="lr-div">
+            <p class="limit">-125</p>
+            <input type="range" class="change-lr" min="-100" max="100" value="-2">
+            <p class="limit">125</p>
+            <p class="lr-value">learning rate</p>
+        </div>
+    </div>
+
+    <div id="display-data">
+        <div class="display">
+
+        </div>
+    </div>
+
+    <div id="footer">
+        <h2><a href="https://github.com/JustGitEverything/InteractiveNeuralNetwork">GitHub repository</a></h2>
+    </div>
+</body>
+
+</html>

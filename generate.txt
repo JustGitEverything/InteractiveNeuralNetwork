@@ -1,0 +1,98 @@
+// Python Script zur Generation von handgeschriebenen Zahlen in JavaScript übersetzen und in Website einbauen
+
+from Network import Network
+
+import pygame
+
+
+def update(rn=None, net=None):
+    nums = {48: 1, 49: 3, 50: 16, 51: 7, 52: 2, 53: 0, 54: 13, 55: 15, 56: 17, 57: 4}
+
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.quit()
+
+        if rn is not None and net is not None and event.type == pygame.KEYDOWN:
+            if nums.__contains__(event.key):
+                net.feedforward(net.data[0][0][nums[event.key]])
+
+                rn.ip = net.results[int(len(arch) / 2)]
+
+    pygame.display.update()
+
+
+def draw(win, inp):
+    for pi, p in enumerate(inp):
+        c = 255 - p * 255
+
+        pygame.draw.circle(win, (c, c, c), ((pi % 28) * 4, (pi // 28) * 4), 4)
+
+
+def slider(win, x, y, width, height):
+    pygame.draw.rect(win, (120, 180, 220), [[x, y], [width, height]])
+
+
+def sliders(win, rn=None):
+    h = 10
+
+    for s in range(SIZE):
+        y = 28 * 4 + 1.5 * h * s + h / 2
+
+        pygame.draw.rect(win, (120, 180, 220), [[10, y], [28 * 4 - 10 * 2, h]])
+
+        if rn is not None:
+            pygame.draw.circle(win, (130, 180, 150), (rn.ip[s] * 80 + 15, y + h / 2), 7)
+
+    pygame.display.update()
+
+
+def moved(rn):
+    h = 10
+
+    for event in pygame.event.get():
+        if (event.type == pygame.MOUSEMOTION and pygame.mouse.get_pressed()[2]) or event.type == pygame.MOUSEBUTTONDOWN:
+            pos = pygame.mouse.get_pos()
+
+            for p in range(SIZE):
+                if 28 * 4 + h / 2 + h * p * 1.5 < pos[1] < 28 * 4 + h * (p + 1) * 1.5:
+                    rn.ip[p] = (pos[0] - 15) / 80
+
+
+SIZE = 10
+
+window = pygame.display.set_mode((28 * 4, 28 * 4 + SIZE * 15 + 5))
+window.fill((255, 255, 255))
+sliders(window)
+
+arch = [784, 100, SIZE, 100, 784]
+
+n = Network(arch, "mnist.pkl.gz", 1)
+
+for i in range(100000):
+    update()
+
+    print(n.evaluate(100))
+
+    n.backpropagation(100)
+
+    draw(window, n.feedforward(n.data[0][0][0]))
+
+cut = int(len(arch) / 2)
+
+r = Network(arch[cut:], "mnist.pkl.gz", 1)
+
+r.biases = n.biases[cut:]
+r.weights = n.weights[cut:]
+
+r.ip = [n.results[cut][i] for i in range(r.arch[0])]
+
+while True:
+    window.fill((255, 255, 255))
+
+    moved(r)
+
+    draw(window, r.feedforward(r.ip))
+
+    sliders(window, r)
+
+    update(r, n)
